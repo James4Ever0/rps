@@ -1,0 +1,1 @@
+sudo iptables -I INPUT -p tcp --dport 8993 -j NFQUEUE --queue-num 2807

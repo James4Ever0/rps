@@ -1,0 +1,6 @@
+- name: test_process_1
+  type: spawned_process
+  port: 8993
+- name: test_process_2
+  type: spawned_process
+  port: 8994
