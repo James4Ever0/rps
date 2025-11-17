@@ -1,0 +1,3 @@
+https://github.com/KevCui/mitm-scripts/blob/master/mitm-delay-request.py
+
+PS: use --allowed-hosts to specify hosts to decrypt tls traffic only for those hosts (usually we use http only)
