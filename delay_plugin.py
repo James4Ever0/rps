@@ -14,6 +14,9 @@ from proxy.http.proxy import HttpProxyBasePlugin
 from proxy.http.parser import HttpParser
 from proxy.common.utils import text_
 
+import uuid
+
+connection_state_table = {}
 
 # we can implement a whitelist instead of blacklist
 class SleepPlugin(HttpProxyBasePlugin):
@@ -24,11 +27,20 @@ class SleepPlugin(HttpProxyBasePlugin):
     # async def get_descriptors(self):
     #     print("Getting descriptors")
     #     return [], []
+    def on_upstream_connection_close(self):
+        connection_state_table[self._connection_id]["state"] = "closed"
+
+    def handle_upstream_chunk(self, chunk:memoryview):
+        connection_state_table[self._connection_id]["state"] = "established"
+        return chunk
 
     def before_upstream_connection(
         self,
         request: HttpParser,
     ) -> Optional[HttpParser]:
+        # assign a unique uuid to each connection
+        setattr(self, "_connection_id", str(uuid.uuid4()))
+        connection_state_table[self._connection_id] = {"state": "syn_sent"}
         request_host = text_(request.host)
         print("Request host:", request_host)
         if True:

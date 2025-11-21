@@ -11,3 +11,4 @@ RPS is a request-based process scheduler that can be used to schedule processes 
 - Onhold requests which do not have corresponding process to handle
 - Priority queue for requests, batch handle nearby requests with same target process
 - Process resource estimation based on heuristics
+- Established connection based active process detection

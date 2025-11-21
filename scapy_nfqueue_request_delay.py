@@ -9,15 +9,20 @@ def detect_and_delay_packet(packet: netfilterqueue.Packet):
     print("Packet detected at:", time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
     payload = packet.get_payload()
     print("Payload: ", payload)
-    packet.retain() # allow later inspection
-    # we can choose to not accept the packet here.
-    packet_list.append(packet)
-    if len(packet_list) > 3:
-        time.sleep(5)
-        print("Packet delayed for 5 seconds every 3 packets.")
-        for p in packet_list:
-            p.accept()
-        packet_list.clear()
+    if True:
+        time.sleep(10)
+        print("Sleep for 10 seconds and accept packet")
+        packet.accept()
+    if False:
+        packet.retain() # allow later inspection
+        # we can choose to not accept the packet here.
+        packet_list.append(packet)
+        if len(packet_list) > 3:
+            time.sleep(30)
+            print("Packet delayed for 5 seconds every 3 packets.")
+            for p in packet_list:
+                p.accept()
+            packet_list.clear()
 
 queue = netfilterqueue.NetfilterQueue()
 queue.bind(queue_num=2807, user_callback=detect_and_delay_packet,
