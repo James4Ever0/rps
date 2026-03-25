@@ -1,0 +1,22 @@
+proxy:
+  listen: "localhost:1223"          # main proxy port
+
+processes:
+  transcribe:
+    command: ["python", "transcribe_server.py", "--port", "2334"]
+    health: "http://localhost:2334/health"
+    routes:
+      - source: "/v1/transcribe"
+        dest: "http://localhost:2334/v1/transcribe"
+        methods: ["POST"]            # if omitted, allow all methods
+      - source: "/v1/transcribe/status"
+        dest: "http://localhost:2334/v1/transcribe/status"
+        methods: ["GET"]
+
+  translate:
+    command: ["python", "translate_server.py", "--port", "2335"]
+    health: "http://localhost:2335/health"
+    routes:
+      - source: "/v1/translate"
+        dest: "http://localhost:2335/v1/translate"
+        methods: ["POST"]
